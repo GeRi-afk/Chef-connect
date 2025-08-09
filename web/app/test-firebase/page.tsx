@@ -10,7 +10,7 @@ import {
   type QueryDocumentSnapshot,
   type SnapshotOptions,
 } from "firebase/firestore";
-import { db } from "@lib/firebase"; // or "../firebase" if that's where yours is
+import { db } from "@/lib/firebase"; // or "../firebase" if that's where yours is
 
 type TestDoc = {
   message: string;

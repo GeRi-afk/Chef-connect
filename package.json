@@ -1,0 +1,11 @@
+{
+  "name": "chef-connect",
+  "private": true,
+  "workspaces": ["api", "web"],
+  "scripts": {
+    "dev:web": "npm --workspace web run dev",
+    "dev:api": "npm --workspace api run dev",
+    "build:web": "npm --workspace web run build",
+    "start:web": "npm --workspace web run start"
+  }
+}

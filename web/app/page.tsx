@@ -1,12 +1,13 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { motion } from "framer-motion";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const features = [
-  { title: "Proof-of-work profiles", text: "Transparent reviews, shift history, verified skills." },
-  { title: "Instant bookings", text: "Post a shift, accept an application, auto-confirm." },
+  { title: "Proof-of-work profiles", text: "Real shift history, transparent reviews, verified skills." },
+  { title: "Instant bookings", text: "Post a shift, accept an application, confirm in minutes." },
   { title: "In-app messaging", text: "Keep everything in one place—no agency middlemen." },
 ];
 
@@ -15,7 +16,7 @@ export default function Home() {
     <div className="min-h-screen">
       {/* HERO */}
       <section className="container py-24 md:py-32">
-        <div className="grid md:grid-cols-2 gap-10 items-center">
+        <div className="grid gap-10 md:grid-cols-2 items-center">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -30,12 +31,8 @@ export default function Home() {
               No agency markup, no noise—just proof and speed.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg">
-                <Link href="/for-business">I’m a Business</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/for-chefs">I’m a Chef</Link>
-              </Button>
+              <Button asChild size="lg"><Link href="/for-business">I’m a Business</Link></Button>
+              <Button asChild variant="outline" size="lg"><Link href="/for-chefs">I’m a Chef</Link></Button>
             </div>
             <p className="text-xs text-muted-foreground">Free while in beta.</p>
           </motion.div>
@@ -46,9 +43,9 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="relative"
           >
-            <div className="aspect-[4/3] w-full rounded-2xl border bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-950/20 dark:to-transparent p-4">
+            <div className="aspect-[4/3] w-full rounded-2xl border bg-gradient-to-br from-emerald-50 to-white p-4 dark:from-emerald-950/20 dark:to-transparent">
               <div className="h-full w-full rounded-xl border border-dashed grid place-items-center text-muted-foreground">
-                App preview goes here (profiles/jobs)
+                App preview (profiles / jobs) goes here
               </div>
             </div>
           </motion.div>
@@ -58,7 +55,7 @@ export default function Home() {
       {/* FEATURES */}
       <section className="container pb-24">
         <div className="grid md:grid-cols-3 gap-6">
-          {features.map((f) => (
+          {features.map(f => (
             <Card key={f.title} className="rounded-2xl">
               <CardContent className="p-6 space-y-2">
                 <h3 className="text-xl font-semibold">{f.title}</h3>
@@ -76,11 +73,8 @@ export default function Home() {
             <h3 className="text-2xl md:text-3xl font-semibold">Ready to try Chef-Connect?</h3>
             <p className="text-muted-foreground">Create a profile and get your first booking.</p>
           </div>
-          <Button asChild size="lg">
-            <Link href="/login">Get started</Link>
-          </Button>
+          <Button asChild size="lg"><Link href="/login">Get started</Link></Button>
         </div>
       </section>
     </div>
   );
-}

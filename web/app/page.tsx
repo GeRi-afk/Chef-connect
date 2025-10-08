@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const features = [
   { title: "Proof-of-work profiles", text: "Real shift history, transparent reviews, verified skills." },
@@ -31,8 +31,12 @@ export default function Home() {
               No agency markup, no noise—just proof and speed.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg"><Link href="/for-business">I’m a Business</Link></Button>
-              <Button asChild variant="outline" size="lg"><Link href="/for-chefs">I’m a Chef</Link></Button>
+              <Button asChild size="lg">
+                <Link href="/for-business">I’m a Business</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/for-chefs">I’m a Chef</Link>
+              </Button>
             </div>
             <p className="text-xs text-muted-foreground">Free while in beta.</p>
           </motion.div>
@@ -55,7 +59,7 @@ export default function Home() {
       {/* FEATURES */}
       <section className="container pb-24">
         <div className="grid md:grid-cols-3 gap-6">
-          {features.map(f => (
+          {features.map((f) => (
             <Card key={f.title} className="rounded-2xl">
               <CardContent className="p-6 space-y-2">
                 <h3 className="text-xl font-semibold">{f.title}</h3>
@@ -73,8 +77,11 @@ export default function Home() {
             <h3 className="text-2xl md:text-3xl font-semibold">Ready to try Chef-Connect?</h3>
             <p className="text-muted-foreground">Create a profile and get your first booking.</p>
           </div>
-          <Button asChild size="lg"><Link href="/login">Get started</Link></Button>
+          <Button asChild size="lg">
+            <Link href="/login">Get started</Link>
+          </Button>
         </div>
       </section>
     </div>
   );
+}

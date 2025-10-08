@@ -1,34 +1,31 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 
-export default function BusinessDashboard() {
-  const router = useRouter();
+export default function Dashboard() {
   const [ready, setReady] = useState(false);
   const [name, setName] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (user) => {
-      if (!user) return router.replace("/login?role=business");
-      const snap = await getDoc(doc(db, "users", user.uid));
-      const role = snap.exists() ? snap.data()?.role : "business";
-      if (role !== "business") return router.replace("/dashboard/chef");
-      setName(user.displayName ?? user.email ?? "There");
-      setReady(true);
+    return onAuthStateChanged(auth, (u) => {
+      if (!u) router.replace("/login");
+      else {
+        setName(u.displayName ?? u.email);
+        setReady(true);
+      }
     });
-    return () => unsub();
   }, [router]);
 
   if (!ready) return null;
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold">Restaurant/Caterer Dashboard</h1>
-      <p className="mt-2 text-gray-600">Welcome, {name}.</p>
-      {/* TODO: post a shift, manage bookings, messages, etc. */}
-    </main>
+    <div className="container py-16">
+      <h1 className="text-2xl font-semibold">Welcome, {name}</h1>
+      <p className="text-muted-foreground mt-2">This is your dashboard.</p>
+    </div>
   );
 }

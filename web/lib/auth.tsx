@@ -7,41 +7,66 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   signOut as firebaseSignOut,
+  fetchSignInMethodsForEmail,
   User,
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 type Role = "business" | "chef";
 
-export async function signInWithGoogle(role: Role) {
+/** Google Sign-in */
+export async function signInWithGoogle(role: Role): Promise<User> {
   const res = await signInWithPopup(auth, googleProvider);
   await upsertUser(res.user, role);
   return res.user;
 }
 
-export async function emailSignInOrCreate(email: string, password: string, role: Role) {
-  try {
+/** Email + password: create if missing, otherwise sign in. */
+export async function emailSignInOrCreate(
+  email: string,
+  password: string,
+  role: Role
+): Promise<User> {
+  // See how this email is registered (if at all)
+  const methods = await fetchSignInMethodsForEmail(auth, email);
+
+  if (methods.length === 0) {
+    // No account -> create one
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    if (!res.user.displayName) {
+      await updateProfile(res.user, { displayName: email.split("@")[0] });
+    }
+    await upsertUser(res.user, role);
+    return res.user;
+  }
+
+  if (methods.includes("password")) {
+    // Normal email/password -> sign in
     const res = await signInWithEmailAndPassword(auth, email, password);
     await upsertUser(res.user, role);
     return res.user;
-  } catch (e: any) {
-    if (e?.code === "auth/user-not-found") {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-      if (!res.user.displayName) {
-        await updateProfile(res.user, { displayName: email.split("@")[0] });
-      }
-      await upsertUser(res.user, role);
-      return res.user;
-    }
-    throw e;
   }
+
+  if (methods.includes("google.com")) {
+    // Registered via Google only
+    throw new Error(
+      "This email is registered with Google Sign-In. Please use 'Continue with Google'."
+    );
+  }
+
+  // Fallback (rare)
+  const res = await signInWithEmailAndPassword(auth, email, password);
+  await upsertUser(res.user, role);
+  return res.user;
 }
 
-export async function signOut() {
+/** Sign out */
+export async function signOut(): Promise<void> {
   await firebaseSignOut(auth);
 }
 
-async function upsertUser(user: User, role: Role) {
+/** Create/update user doc */
+async function upsertUser(user: User, role: Role): Promise<void> {
   const ref = doc(db, "users", user.uid);
   await setDoc(
     ref,

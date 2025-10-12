@@ -18,6 +18,7 @@
     "tailwindcss-animate": "..."
   },
   "devDependencies": {
+    "autoprefixer": "^10",
     "@types/node": "...",
     "@types/react": "...",
     "@types/react-dom": "...",

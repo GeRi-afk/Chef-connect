@@ -1,9 +1,7 @@
-// web/lib/firebase.ts
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Your env vars must be defined locally (.env.local) and on Vercel
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
@@ -17,8 +15,4 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-
-// ✅ This is the piece your import needs:
 export const googleProvider = new GoogleAuthProvider();
-// (optional) make Google prompt account chooser every time:
-googleProvider.setCustomParameters({ prompt: "select_account" });
